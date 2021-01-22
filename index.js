@@ -4,8 +4,8 @@ const server = require('express')()
 // 第 2 步：创建一个 renderer
 const renderer = require('vue-server-renderer').createRenderer()
 
-
-server.get('*', (req, res) => {
+function createApp (context) {
+  console.log(context.url);
   const app = new Vue({
     template: `<div>Hello World我是{{myName}}年龄{{myage}} 测试d {{d}} 测试e {{e}}</div>`,
     data: {
@@ -15,8 +15,10 @@ server.get('*', (req, res) => {
       e: 1
     }
   })
-  
-  console.log(req.url);
+  return app
+}
+server.get('*', (req, res) => {
+  let app = createApp(req)
 
   if (req.url === '/111') {
     app.d = 123
